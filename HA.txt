@@ -1,0 +1,41 @@
+module ha(a, b, sum, carry);
+
+input a;
+
+input b;
+
+output sum;
+
+output carry;
+
+assign carry=a&b;                           
+
+assign sum=a^b;                            
+endmodule
+
+
+TEST
+
+module halfaddert_b;
+
+reg A;
+
+reg B;
+
+wire S;
+
+wire C;
+  ha uut(A,B,S,C);
+initial begin
+
+#10 A=1;B=1;                       
+$dumpfile("dump.vcd"); $dumpvars;
+#10 A=1;B=0;   
+  $dumpfile("dump.vcd"); $dumpvars;
+#10 A=0;B=1;                        
+  $dumpfile("dump.vcd"); $dumpvars;
+#10 A=0; B=0;
+
+end
+
+ endmodule

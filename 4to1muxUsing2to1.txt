@@ -1,0 +1,55 @@
+`timescale 1ns / 1ps
+
+module Mux2to1(input ti0,input ti1,input ts,output tout);
+
+assign tout = ~ts&ti0 | ts&ti1;
+
+endmodule
+
+----------
+
+`timescale 1ns / 1ps
+
+module mux4to1(input i0,input i1,input i2,input i3,input s0,input s1,output y);
+
+Mux2to1 first(.ti0(i0),.ti1(i1),.ts(s0), .tout(temp1));
+
+Mux2to1 second(.ti0(i2),.ti1(i3),.ts(s0), .tout(temp2));
+
+Mux2to1 sel(.ti0(temp1), .ti1(temp2), .ts(s1), .tout(y));
+
+endmodule
+
+----------
+
+`timescale 1ns / 1ps
+
+module tb_mux();
+
+reg ti0,ti1,ti2,ti3,ts0,ts1;
+wire ty;
+
+mux4to1 test(.i0(ti0), .i1(ti1), .i2(ti2), .i3(ti3), .s0(ts0), .s1(ts1), .y(ty));
+
+initial begin
+
+ti0=1;ti1=0;ti2=0;ti3=0;
+ts0=0; ts1=0; 
+#40
+
+ti0=0;ti1=1;ti2=0;ti3=0;
+ts0=1; ts1=0;
+#40
+
+ti0=0;ti1=0;ti2=1;ti3=0;
+ts0=0; ts1=1;
+#40
+
+ti0=0;ti1=0;ti2=0;ti3=1;
+ts0=1; ts1=1;
+#40
+
+
+$stop;
+end
+endmodule

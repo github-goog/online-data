@@ -1,0 +1,31 @@
+module demux1to4(input i,input s0,input s1,output y0,output y1,output y2,output y3);
+assign y0= i&~s0&~s1;
+assign y1= i&s0&~s1;
+assign y2= i&~s0&s1;
+assign y3= i&s0&s1;
+endmodule
+
+
+TEST
+
+`timescale 1ns / 1ps
+module tb_demux1to4();
+reg ti,ts0,ts1;
+wire ty0,ty1,ty2,ty3;
+demux1to4 demux(.i(ti),.s0(ts0),.s1(ts1),.y0(ty0),.y1(ty1),.y2(ty2),.y3(ty3));
+initial begin
+ti=1;
+ts0=0; ts1=0; 
+#10
+ti=1;
+ts0=1; ts1=0;
+#10
+ti=1;
+ts0=0; ts1=1;
+#10
+ti=1;
+ts0=1; ts1=1;
+#10
+$stop;
+end
+endmodule
